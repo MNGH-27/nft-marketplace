@@ -2,8 +2,9 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { NextPage } from 'next'
-import BaseLayout  from '../components/layout/BaseLayout'
-import NftList from '../components/nft/list'
+
+import BaseLayout  from '../components/UI/layout/BaseLayout'
+import NftList from '../components/UI/nft/list'
 
 import nfts from  '../content/meta.json';
 import { NftMeta } from '../types/nft';
