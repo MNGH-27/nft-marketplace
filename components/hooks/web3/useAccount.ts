@@ -3,15 +3,17 @@ import { CryptoHookFactory } from "../../../types/hooks";
 import useSWR from "swr";
 
 type UseAccountResponse = {
-  connect: () => void
+  connect: () => void;
+  isLoading: boolean;
+  isInstalled: boolean;
 }
 
 type AccountHookFactory = CryptoHookFactory<string, UseAccountResponse>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>
 
-export const hookFactory: AccountHookFactory = ({provider, ethereum}) => () => {
-  const {data, mutate, ...swr} = useSWR(
+export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading}) => () => {
+  const {data, mutate, isValidating, ...swr} = useSWR(
     provider ? "web3/useAccount" : null,
     async () => {
       const accounts = await provider!.listAccounts();
@@ -54,6 +56,9 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum}) => () => {
   return {
     ...swr,
     data,
+    isValidating,
+    isLoading: isLoading || isValidating,
+    isInstalled: ethereum?.isMetaMask || false,
     mutate,
     connect
   };
