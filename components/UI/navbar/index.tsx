@@ -8,6 +8,9 @@ import Link from 'next/link';
 
 import ActiveLink from '../link';
 
+import { useWeb3 } from '../../providers/web3';
+import { useAccount } from '../../hooks/web3';
+
 const navigation = [
   { name: 'MarketPlace', href: '/', current: true },
   { name: 'Create', href: '/nft/create', current: false }
@@ -18,6 +21,15 @@ function classNames(...classes : string[]) {
 }
 
 export default function Example() {
+
+  const {hooks} = useWeb3();
+  const {data} = hooks.useAccount("");
+  const {account} = useAccount();
+
+  // console.log("data : " , data);
+  // console.log("account.data : ", account.data);
+
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -77,7 +89,7 @@ export default function Example() {
                 </button>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="ml-3 relative">
+                {false ? <Menu as="div" className="ml-3 relative">
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
@@ -111,7 +123,18 @@ export default function Example() {
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> : 
+                <button
+                onClick={() => {
+                  // in the next lecture!
+                  account.connect();
+                }}
+                type="button"
+                className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Connect Wallet
+                </button>
+              }
               </div>
             </div>
           </div>
